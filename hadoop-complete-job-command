@@ -1,0 +1,1 @@
+hadoop jar /usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.0.0-mr1/cdh4.1.1.jar -mapper mapper2.py -reducer reducer2.py -file mapper2.py -file reducer2.py -file logparse.py -file logparse.pyc -input myinput3 -output output11

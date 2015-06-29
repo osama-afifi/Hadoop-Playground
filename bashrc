@@ -1,43 +1,24 @@
-#!/usr/bin/python
-"""
-Your mapper function should print out 10 lines containing longest posts, sorted in
-ascending order from shortest to longest.
-Please do not use global variables and do not change the "main" function.
-"""
-import sys
-import csv
+# .bashrc
+
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+run_mapreduce() {
+	hadoop jar /usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.0.0-mr1-cdh4.1.1.jar -mapper $1 -reducer $2 -file $1 -file $2 -input $3 -output $4
+}
+
+run_mapreduce_with_combiner() {
+	hadoop jar /usr/lib/hadoop-0.20-mapreduce/contrib/streaming/hadoop-streaming-2.0.0-mr1-cdh4.1.1.jar -mapper $1 -reducer $2 -combiner $2 -file $1 -file $2 -input $3 -output $4
+}
+
+alias hs=run_mapreduce
+alias hsc=run_mapreduce_with_combiner
 
 
-def mapper():
-    reader = csv.reader(sys.stdin, delimiter='\t')
-    writer = csv.writer(sys.stdout, delimiter='\t', quotechar='"', quoting=csv.QUOTE_ALL)
-
-    posts = []
-    for line in reader:
-        posts.append((line,int(line[4])))
-    posts = sorted(posts, key=lambda x: x[1])
-    for line , _ in posts[len(posts)-10:len(posts)]:
-        writer.writerow(line)
-
-
-test_text = """\"\"\t\"\"\t\"\"\t\"\"\t\"333\"\t\"\"
-\"\"\t\"\"\t\"\"\t\"\"\t\"88888888\"\t\"\"
-\"\"\t\"\"\t\"\"\t\"\"\t\"1\"\t\"\"
-\"\"\t\"\"\t\"\"\t\"\"\t\"11111111111\"\t\"\"
-\"\"\t\"\"\t\"\"\t\"\"\t\"1000000000\"\t\"\"
-\"\"\t\"\"\t\"\"\t\"\"\t\"22\"\t\"\"
-\"\"\t\"\"\t\"\"\t\"\"\t\"4444\"\t\"\"
-\"\"\t\"\"\t\"\"\t\"\"\t\"666666\"\t\"\"
-\"\"\t\"\"\t\"\"\t\"\"\t\"55555\"\t\"\"
-\"\"\t\"\"\t\"\"\t\"\"\t\"999999999\"\t\"\"
-\"\"\t\"\"\t\"\"\t\"\"\t\"7777777\"\t\"\"
-"""
-
-# This function allows you to test the mapper with the provided test string
-def main():
-    import StringIO
-    sys.stdin = StringIO.StringIO(test_text)
-    mapper()
-    sys.stdin = sys.__stdin__
-
-main()
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
